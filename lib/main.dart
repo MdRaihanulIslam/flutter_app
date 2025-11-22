@@ -1,65 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/data/notifiers.dart';
+import 'package:flutter_app/views/widget_tree.dart';
+import 'package:flutter_app/views/widgets/navbar_widget.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-String title = "Flutter Mapp";
-
-class  MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context){
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
-          brightness: Brightness.dark
-        ),
-      ),
-      home: MyHomePage(),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int currentIndex = 0;   
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          centerTitle: true,
-        ),
-        body: currentIndex==0? Center(child: Text('1')):Center(child: Text('2')),
-        bottomNavigationBar: NavigationBar(
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              label: "Home"
+    return ValueListenableBuilder(
+      valueListenable: isDarkModeNotifier,
+      builder: (context, isDarkMode, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.teal,
+              brightness: isDarkMode ? Brightness.light:Brightness.dark,
             ),
-            NavigationDestination(
-              icon: Icon(Icons.person),
-              label: "Profile"
-            ),
-          ],
-          onDestinationSelected: (int value) {
-            setState(() {
-              currentIndex = value;
-            });
-          },
-          selectedIndex: currentIndex,
-        ),
-      );
+          ),
+          home: WidgetTree(),
+        );
+      },
+    );
   }
 }
