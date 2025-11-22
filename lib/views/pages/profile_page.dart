@@ -10,45 +10,91 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController controller = TextEditingController();
   bool? isChecked = false;
+  bool isSwitched = false;
+  double sliderValue = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+              onEditingComplete: () {
+                setState(() {});
+              },
             ),
-            onEditingComplete: (){
-              setState(() {
-                
-              });
-            },
-          ),
-          Text(controller.text),
-          Checkbox(
-            tristate: true,
-            value: isChecked, 
-            onChanged: (bool? value){
-              setState(() {
-                isChecked = value;
-              });
-            },
-          ),
-          CheckboxListTile(
-            tristate: true,
-            title: Text("Checkbox List Tile"),
-            value: isChecked, 
-            onChanged: (bool? value)
-            {
-              setState(() {
-                isChecked = value;
-              });
-            }
-          ),
-        ],
+
+            Text(controller.text),
+
+            Checkbox.adaptive(
+              tristate: true,
+              value: isChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked = value;
+                });
+              },
+            ),
+
+            CheckboxListTile.adaptive(
+              tristate: true,
+              title: const Text("Checkbox List Tile"),
+              value: isChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked = value;
+                });
+              },
+            ),
+
+            Switch.adaptive(
+              value: isSwitched,
+              onChanged: (bool value) {
+                setState(() {
+                  isSwitched = value;
+                });
+              },
+            ),
+
+            SwitchListTile.adaptive(
+              title: const Text('Switch me'),
+              value: isSwitched,
+              onChanged: (bool value) {
+                setState(() {
+                  isSwitched = value;
+                });
+              },
+            ),
+
+            Slider.adaptive(
+              max: 10,
+              value: sliderValue,
+              divisions: 10,
+              onChanged: (double value) {
+                setState(() {
+                  sliderValue = value;
+                });
+              },
+            ),
+
+            InkWell(
+              onTap: () {
+                print('Image tapped');
+              },
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                color: Colors.white12,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
